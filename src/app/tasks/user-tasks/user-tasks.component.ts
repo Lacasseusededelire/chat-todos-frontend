@@ -160,4 +160,38 @@ export class UserTasksComponent implements OnInit {
       },
     });
   }
+ 
+  sendTaskToChat(taskId: number) {
+    const task = this.tasks.find(t => t.id === taskId);
+    if (!task) {
+      console.error('Tâche non trouvée:', taskId);
+      return;
+    }
+  
+    this.http.get<any>(`http://localhost:3000/projects/${task.project.id}`).subscribe({
+      next: (project) => {
+        const chat = project.chats.find((c: any) => c.name.includes('Général'));
+        if (!chat) {
+          console.error('Chat général non trouvé pour le projet:', task.project.id);
+          return;
+        }
+  
+        const content = `Tâche : ${task.title || 'Sans titre'}\nDescription : ${task.description || 'N/A'}`;
+        if (!content.trim()) {
+          console.error('Le contenu du message ne peut pas être vide');
+          return;
+        }
+  
+        // Changer "message" en "content" pour correspondre au backend
+        this.http.post(`http://localhost:3000/chat/${chat.id}/message`, { content, taskId }).subscribe({
+          next: () => {
+            console.log('Tâche envoyée dans le chat:', chat.id);
+            this.router.navigate(['/chat', chat.id]);
+          },
+          error: (err) => console.error('Erreur envoi tâche dans le chat:', err),
+        });
+      },
+      error: (err) => console.error('Erreur chargement projet:', err),
+    });
+  }
 }

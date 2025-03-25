@@ -13,6 +13,8 @@
   mat-list-item {
     display: flex;
     margin: 5px 0;
+    min-height: 0;
+    height: auto; /* Permettre à mat-list-item de s'adapter à la hauteur du contenu */
   }
   
   .current-user {
@@ -21,22 +23,27 @@
     background-color: #c3e6cb; /* Vert pastel pour l'utilisateur actuel */
     padding: 8px;
     border-radius: 10px;
-    max-width: 70%;
+    max-width: 70%; 
+    height: fit-content;/* Garder la largeur maximale pour éviter que le message prenne toute la largeur */
     margin-left: auto;
+    word-break: break-word; /* Permettre au texte de se couper pour passer à la ligne */
   }
   
   .other-user {
+    height: fit-content;
     justify-content: flex-start;
     text-align: left;
     padding: 8px;
     border-radius: 10px;
-    max-width: 70%;
+    max-width: 70%; /* Garder la largeur maximale pour éviter que le message prenne toute la largeur */
     margin-right: auto;
+    word-break: break-word; /* Permettre au texte de se couper pour passer à la ligne */
   }
   
   .message-content {
     display: flex;
     flex-direction: column;
+    width: 100%; /* S'assurer que message-content prend toute la largeur disponible */
   }
   
   .sender {
@@ -47,6 +54,9 @@
   
   .content {
     margin-top: 2px;
+    white-space: pre-wrap; /* Permettre au texte de s'étendre sur plusieurs lignes et respecter les retours à la ligne */
+    word-break: break-word; /* S'assurer que les mots longs sont coupés pour passer à la ligne */
+    overflow-wrap: break-word; /* Alternative à word-break pour une compatibilité maximale */
   }
   
   .file-content {

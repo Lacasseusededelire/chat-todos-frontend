@@ -45,10 +45,12 @@
       background-color: #c3e6cb; /* Vert pastel */
       color: #333;
       font-weight: bold;
+      padding: 10px; /* Padding pour l'en-tête */
     }
   
     mat-cell {
       color: #666;
+      padding: 10px; /* Padding pour les cellules */
     }
   
     mat-row:nth-child(even) {
@@ -57,6 +59,52 @@
   
     mat-row:hover {
       background-color: #e8f0fe; /* Bleu pastel hover */
+    }
+  
+    /* Style spécifique pour la colonne actions */
+    .mat-column-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px; /* Augmenter l'espacement entre les boutons */
+      padding-right: 15px; /* Augmenter le padding à droite */
+      min-width: 150px; /* S'assurer que la colonne est assez large pour les boutons */
+  
+      button[mat-icon-button] {
+        /* S'assurer que les boutons sont visibles */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px; /* Augmenter la taille des boutons */
+        height: 40px;
+        border-radius: 50%; /* Rendre les boutons ronds */
+        transition: background-color 0.2s; /* Ajouter une transition pour le hover */
+  
+        /* Couleurs spécifiques pour chaque bouton */
+        &.mat-primary {
+          color: #1976d2; /* Bleu pour le bouton "edit" */
+        }
+  
+        &.mat-warn {
+          color: #d32f2f; /* Rouge pour le bouton "delete" */
+        }
+  
+        &.mat-accent {
+          color: #f06292; /* Rose pour le bouton "chat" */
+        }
+  
+        /* Effet hover pour les boutons */
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.05); /* Fond gris clair au survol */
+        }
+  
+        mat-icon {
+          font-size: 24px; /* Augmenter la taille de l'icône */
+          width: 24px;
+          height: 24px;
+          line-height: 24px; /* Centrer l'icône verticalement */
+        }
+      }
     }
   }
   
@@ -78,8 +126,4 @@
     &.mat-warn {
       background-color: #f5c6cb; /* Corail pastel */
     }
-  }
-  
-  mat-icon {
-    color: #666;
   }

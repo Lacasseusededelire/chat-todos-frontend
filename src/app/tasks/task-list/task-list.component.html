@@ -1,13 +1,43 @@
-<mat-list>
-    <mat-list-item *ngFor="let task of tasks">
-      <span matLine>{{ task.title }} - {{ task.status }}</span>
-      <mat-select [(value)]="task.status" (selectionChange)="updateTask(task.id, $event.value)">
-        <mat-option value="nouvelle">Nouvelle</mat-option>
-        <mat-option value="en cours">En cours</mat-option>
-        <mat-option value="terminée">Terminée</mat-option>
-        <mat-option value="en retard">En retard</mat-option>
-        <mat-option value="annulée">Annulée</mat-option>
-      </mat-select>
-    </mat-list-item>
-  </mat-list>
-  <button mat-raised-button color="accent" [routerLink]="['/tasks/create', projectId]" *ngIf="projectId">Nouvelle Tâche</button>
+<div class="task-table-container">
+    <table mat-table [dataSource]="tasks" class="mat-elevation-z2">
+      <!-- Colonne Titre -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Titre</th>
+        <td mat-cell *matCellDef="let task">{{ task.title }}</td>
+      </ng-container>
+  
+      <!-- Colonne Statut -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Statut</th>
+        <td mat-cell *matCellDef="let task">{{ task.status }}</td>
+      </ng-container>
+  
+      <!-- Colonne Action (pour modifier le statut) -->
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef>Modifier Statut</th>
+        <td mat-cell *matCellDef="let task">
+          <mat-select [(value)]="task.status" (selectionChange)="updateTask(task.id, $event.value)">
+            <mat-option value="nouvelle">Nouvelle</mat-option>
+            <mat-option value="en cours">En cours</mat-option>
+            <mat-option value="terminée">Terminée</mat-option>
+            <mat-option value="en retard">En retard</mat-option>
+            <mat-option value="annulée">Annulée</mat-option>
+          </mat-select>
+        </td>
+      </ng-container>
+  
+      <!-- Définir les colonnes à afficher -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  
+    <!-- Message si aucune tâche -->
+    <div class="no-tasks" *ngIf="tasks.length === 0">
+      Aucune tâche pour ce projet.
+    </div>
+  </div>
+  
+  <!-- Bouton Nouvelle Tâche -->
+  <button mat-raised-button class="new-task-button" [routerLink]="['/tasks/create', projectId]" *ngIf="projectId">
+    Nouvelle Tâche
+  </button>

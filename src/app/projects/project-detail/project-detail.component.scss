@@ -1,9 +1,36 @@
 .project-detail-card {
     max-width: 800px;
     margin: 20px auto;
+    background-color: #f5f5f5; /* Gris pastel pour le fond */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   mat-form-field {
     width: 100%;
     margin-bottom: 15px;
+  }
+  
+  mat-card-title {
+    font-size: 2.2rem; /* Plus grand que les h3 (1.8rem) */
+    font-weight: 700; /* Poids plus épais pour plus de présence */
+    color: #4a5568; /* Gris foncé légèrement plus sombre pour se démarquer */
+    background-color: #f5c6cb; /* Rose pastel pour le fond */
+    padding: 12px 20px; /* Padding un peu plus grand que les h3 */
+    border-radius: 8px; /* Coins arrondis */
+    margin: 10px 0; /* Marge pour espacer */
+    border-bottom: 3px solid #f687b3; /* Bordure inférieure en rose pastel plus foncé */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Ombre légère */
+  }
+  
+  h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #6b7280;
+    background-color: #d4e4f5; /* Bleu pastel */
+    padding: 10px 15px;
+    border-radius: 8px;
+    margin: 20px 0 10px 0;
+    border-left: 5px solid #a3bffa;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   }

@@ -8,6 +8,7 @@
       </div>
     </div>
   
+
     <div class="filters">
       <mat-form-field appearance="outline">
         <mat-label>Filtrer par statut</mat-label>
@@ -31,38 +32,44 @@
         <mat-icon matSuffix>search</mat-icon>
       </mat-form-field>
     </div>
-  
+ 
     <mat-table [dataSource]="dataSource" matSort>
+
       <ng-container matColumnDef="title">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Titre</mat-header-cell>
         <mat-cell *matCellDef="let task">{{ task.title }}</mat-cell>
       </ng-container>
   
+
       <ng-container matColumnDef="description">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
         <mat-cell *matCellDef="let task">{{ task.description }}</mat-cell>
       </ng-container>
   
+
       <ng-container matColumnDef="startDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Date de début</mat-header-cell>
         <mat-cell *matCellDef="let task">{{ task.startDate | date:'shortDate' }}</mat-cell>
       </ng-container>
   
+
       <ng-container matColumnDef="endDate">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Date de fin</mat-header-cell>
         <mat-cell *matCellDef="let task">{{ task.endDate | date:'shortDate' }}</mat-cell>
       </ng-container>
   
+
       <ng-container matColumnDef="status">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Statut</mat-header-cell>
         <mat-cell *matCellDef="let task">{{ task.status }}</mat-cell>
       </ng-container>
   
+
       <ng-container matColumnDef="project">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Projet</mat-header-cell>
         <mat-cell *matCellDef="let task">{{ task.project?.name }}</mat-cell>
       </ng-container>
-  
+ 
       <ng-container matColumnDef="assignedTo">
         <mat-header-cell *matHeaderCellDef mat-sort-header>Assigné à</mat-header-cell>
         <mat-cell *matCellDef="let task">{{ task.assignedTo?.username || 'Non assigné' }}</mat-cell>
@@ -71,11 +78,14 @@
       <ng-container matColumnDef="actions">
         <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
         <mat-cell *matCellDef="let task">
-          <button mat-icon-button color="primary" (click)="editTask(task.id)">
+          <button mat-icon-button color="primary" (click)="editTask(task.id)" title="Modifier">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" (click)="deleteTask(task.id)">
+          <button mat-icon-button color="warn" (click)="deleteTask(task.id)" title="Supprimer">
             <mat-icon>delete</mat-icon>
+          </button>
+          <button mat-icon-button color="accent" (click)="sendTaskToChat(task.id)" title="Envoyer au chat">
+            <mat-icon>chat</mat-icon>
           </button>
         </mat-cell>
       </ng-container>
