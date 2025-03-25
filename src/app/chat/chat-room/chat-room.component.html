@@ -29,9 +29,7 @@
         <button mat-icon-button type="button" (click)="stopRecording()" *ngIf="isRecording" color="warn"><mat-icon>stop</mat-icon></button>
         <button mat-icon-button type="button" (click)="toggleEmojiPicker()" color="primary"><mat-icon>mood</mat-icon></button>
         <div *ngIf="showEmojiPicker" class="emoji-picker">
-          <span (click)="addEmoji('😊')">😊</span>
-          <span (click)="addEmoji('😂')">😂</span>
-          <span (click)="addEmoji('👍')">👍</span>
+          <emoji-mart (emojiClick)="addEmoji($event)" title="Choisis ton emoji"></emoji-mart>
         </div>
       </form>
     </mat-card-actions>

@@ -86,14 +86,17 @@
   
   .emoji-picker {
     position: absolute;
-    bottom: 60px;
-    background: white;
-    border: 1px solid #ccc;
+    bottom: 60px; /* Positionne le picker juste au-dessus des boutons */
+    right: 10px;
+    z-index: 1000; /* S'assure que le picker est au-dessus des autres éléments */
+    background-color: #f5f5f5; /* Gris pastel pour le fond */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     padding: 10px;
-    border-radius: 5px;
   }
   
-  .emoji-picker span {
-    cursor: pointer;
-    margin: 0 5px;
+ .emoji-mart {
+    --emoji-mart-background-color: #d4e4f5; /* Bleu pastel pour le fond du picker */
+    --emoji-mart-header-color: #4a5568; /* Gris foncé pour les en-têtes */
+    --emoji-mart-emoji-hover-background: #a3bffa; /* Bleu pastel plus foncé au survol */
   }

@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
+import { PickerModule } from '@ctrl/ngx-emoji-mart'; // Import de la librairie emoji
 
 @Component({
   selector: 'app-chat-room',
@@ -23,6 +24,7 @@ import { HttpClient } from '@angular/common/http';
     MatInputModule,
     MatButtonModule,
     MatIconModule,
+    PickerModule, // Ajout de PickerModule pour les emojis
   ],
   templateUrl: './chat-room.component.html',
   styleUrls: ['./chat-room.component.scss'],
@@ -46,7 +48,7 @@ export class ChatRoomComponent implements OnInit {
     private http: HttpClient
   ) {
     this.messageForm = this.fb.group({
-      content: ['', Validators.required],
+      content: ['', [Validators.required, Validators.maxLength(2000)]]//imite à 500 caractères
     });
     this.currentUserId = this.authService.getCurrentUserId();
   }
@@ -116,7 +118,7 @@ export class ChatRoomComponent implements OnInit {
       formData.append('file', file);
       this.http.post('http://localhost:3000/chat/upload', formData).subscribe({
         next: (res: any) => {
-          const fileUrl = `http://localhost:3000${res.fileUrl}`; // Ajout de l'URL complète
+          const fileUrl = `http://localhost:3000${res.fileUrl}`;
           console.log('Fichier uploadé, URL:', fileUrl);
           this.sendMessage(fileUrl);
         },
@@ -126,6 +128,12 @@ export class ChatRoomComponent implements OnInit {
   }
 
   startRecording() {
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      console.error('API getUserMedia non supportée par ce navigateur ou contexte non sécurisé (HTTPS requis).');
+      alert('L\'enregistrement audio n\'est pas supporté. Veuillez utiliser un navigateur moderne et accéder à l\'application via HTTPS.');
+      return;
+    }
+
     navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
       this.mediaRecorder = new MediaRecorder(stream);
       this.audioChunks = [];
@@ -133,7 +141,11 @@ export class ChatRoomComponent implements OnInit {
       this.mediaRecorder.onstop = () => this.saveAudio();
       this.mediaRecorder.start();
       this.isRecording = true;
-    }).catch(err => console.error('Erreur enregistrement:', err));
+      console.log('Enregistrement démarré');
+    }).catch(err => {
+      console.error('Erreur lors de l\'accès au microphone:', err);
+      alert('Impossible d\'accéder au microphone. Vérifiez les permissions ou essayez un autre navigateur.');
+    });
   }
 
   stopRecording() {
@@ -141,6 +153,7 @@ export class ChatRoomComponent implements OnInit {
       this.mediaRecorder.stop();
       this.mediaRecorder.stream.getTracks().forEach(track => track.stop());
       this.isRecording = false;
+      console.log('Enregistrement arrêté');
     }
   }
 
@@ -150,7 +163,7 @@ export class ChatRoomComponent implements OnInit {
     formData.append('file', audioBlob, 'audio.webm');
     this.http.post('http://localhost:3000/chat/upload', formData).subscribe({
       next: (res: any) => {
-        const fileUrl = `http://localhost:3000${res.fileUrl}`; // Ajout de l'URL complète
+        const fileUrl = `http://localhost:3000${res.fileUrl}`;
         console.log('Audio uploadé, URL:', fileUrl);
         this.sendMessage(fileUrl);
       },
@@ -162,10 +175,11 @@ export class ChatRoomComponent implements OnInit {
     this.showEmojiPicker = !this.showEmojiPicker;
   }
 
-  addEmoji(emoji: string) {
+  addEmoji(event: any) {
+    const emoji = event.emoji.native; // Récupère l'emoji natif (ex: 😊)
     const currentContent = this.messageForm.get('content')?.value || '';
     this.messageForm.get('content')?.setValue(currentContent + emoji);
-    this.showEmojiPicker = false;
+    this.showEmojiPicker = false; // Ferme le picker après sélection
   }
 
   getFileType(fileUrl: string | undefined): string {
