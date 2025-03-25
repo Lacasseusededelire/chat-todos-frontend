@@ -1,0 +1,88 @@
+<div class="container">
+    <div class="header">
+      <h1>Mes Tâches</h1>
+      <div class="actions">
+        <button mat-raised-button color="primary" [routerLink]="['/projects']">Voir les Projets</button>
+        <button mat-raised-button color="accent" [routerLink]="['/tasks/user-create']">Nouvelle Tâche</button>
+        <button mat-raised-button color="warn" (click)="generatePlanning()">Générer Planning</button>
+      </div>
+    </div>
+  
+    <div class="filters">
+      <mat-form-field appearance="outline">
+        <mat-label>Filtrer par statut</mat-label>
+        <mat-select [(ngModel)]="selectedStatus" (ngModelChange)="onFilterChange()">
+          <mat-option [value]="null">Tous</mat-option>
+          <mat-option *ngFor="let status of statuses" [value]="status">{{ status }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Filtrer par projet</mat-label>
+        <mat-select [(ngModel)]="selectedProject" (ngModelChange)="onFilterChange()">
+          <mat-option [value]="null">Tous</mat-option>
+          <mat-option *ngFor="let project of projects" [value]="project.id">{{ project.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline" class="search-bar">
+        <mat-label>Rechercher</mat-label>
+        <input matInput [(ngModel)]="searchQuery" (ngModelChange)="onSearchChange()" placeholder="Rechercher une tâche...">
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+    </div>
+  
+    <mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Titre</mat-header-cell>
+        <mat-cell *matCellDef="let task">{{ task.title }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="description">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Description</mat-header-cell>
+        <mat-cell *matCellDef="let task">{{ task.description }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="startDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Date de début</mat-header-cell>
+        <mat-cell *matCellDef="let task">{{ task.startDate | date:'shortDate' }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="endDate">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Date de fin</mat-header-cell>
+        <mat-cell *matCellDef="let task">{{ task.endDate | date:'shortDate' }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="status">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Statut</mat-header-cell>
+        <mat-cell *matCellDef="let task">{{ task.status }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="project">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Projet</mat-header-cell>
+        <mat-cell *matCellDef="let task">{{ task.project?.name }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="assignedTo">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Assigné à</mat-header-cell>
+        <mat-cell *matCellDef="let task">{{ task.assignedTo?.username || 'Non assigné' }}</mat-cell>
+      </ng-container>
+  
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>Actions</mat-header-cell>
+        <mat-cell *matCellDef="let task">
+          <button mat-icon-button color="primary" (click)="editTask(task.id)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteTask(task.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>

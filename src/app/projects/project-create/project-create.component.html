@@ -1,0 +1,27 @@
+<mat-card class="project-create-card">
+    <mat-card-header>
+      <mat-card-title>Créer un Projet</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="outline">
+          <mat-label>Nom</mat-label>
+          <input matInput formControlName="name" />
+          <mat-error *ngIf="projectForm.get('name')?.hasError('required')">Nom requis</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Prix</mat-label>
+          <input matInput type="number" formControlName="price" />
+          <mat-error *ngIf="projectForm.get('price')?.hasError('required')">Prix requis</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Langue</mat-label>
+          <mat-select formControlName="language">
+            <mat-option value="fr">Français</mat-option>
+            <mat-option value="en">Anglais</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!projectForm.valid">Créer</button>
+      </form>
+    </mat-card-content>
+  </mat-card>

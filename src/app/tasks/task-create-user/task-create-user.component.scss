@@ -1,0 +1,33 @@
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #f5f5f5; /* Gris pastel */
+    border-radius: 8px;
+  }
+  
+  h1 {
+    color: #666;
+    text-align: center;
+  }
+  
+  mat-form-field {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+  }
+  
+  button[mat-raised-button] {
+    &.mat-primary {
+      background-color: #aec6cf; /* Bleu pastel */
+    }
+  
+    &.mat-warn {
+      background-color: #f5c6cb; /* Corail pastel */
+    }
+  }

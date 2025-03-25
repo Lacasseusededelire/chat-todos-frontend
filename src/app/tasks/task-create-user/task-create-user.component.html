@@ -1,0 +1,38 @@
+<div class="container">
+    <h1>Créer une nouvelle tâche</h1>
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Titre</mat-label>
+        <input matInput formControlName="title">
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Date de début</mat-label>
+        <input matInput type="date" formControlName="startDate">
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Date de fin</mat-label>
+        <input matInput type="date" formControlName="endDate">
+      </mat-form-field>
+  
+      <mat-form-field appearance="outline">
+        <mat-label>Projet</mat-label>
+        <mat-select formControlName="projectId">
+          <mat-option *ngFor="let project of projects" [value]="project.id">
+            {{ project.name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+  
+      <div class="actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="taskForm.invalid">Créer</button>
+        <button mat-raised-button color="warn" type="button" (click)="cancel()">Annuler</button>
+      </div>
+    </form>
+  </div>

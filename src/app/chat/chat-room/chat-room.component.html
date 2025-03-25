@@ -1,0 +1,38 @@
+<mat-card class="chat-room-card">
+    <mat-card-content>
+      <mat-list class="message-list">
+        <mat-list-item *ngFor="let message of messages" [ngClass]="{'current-user': isCurrentUser(message), 'other-user': !isCurrentUser(message)}" [style.backgroundColor]="!isCurrentUser(message) ? getUserColor(message.sender?.id) : null">
+          <div class="message-content">
+            <span class="sender">{{ message.sender?.username || 'Gemini' }}:</span>
+            <span class="content">{{ message.content }}</span>
+            <div *ngIf="message.fileUrl" class="file-content">
+              <img *ngIf="getFileType(message.fileUrl) === 'image'" [src]="message.fileUrl" alt="Image" class="media">
+              <video *ngIf="getFileType(message.fileUrl) === 'video'" [src]="message.fileUrl" controls class="media"></video>
+              <audio *ngIf="getFileType(message.fileUrl) === 'audio'" [src]="message.fileUrl" controls class="media"></audio>
+              <a *ngIf="getFileType(message.fileUrl) === 'pdf'" [href]="message.fileUrl" target="_blank" class="file-link">📄 PDF</a>
+              <a *ngIf="getFileType(message.fileUrl) === 'file'" [href]="message.fileUrl" target="_blank" class="file-link">📎 Fichier</a>
+            </div>
+          </div>
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-actions>
+      <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+        <mat-form-field appearance="outline">
+          <input matInput formControlName="content" placeholder="Écris ton message">
+        </mat-form-field>
+        <button mat-icon-button type="submit" color="primary"><mat-icon>send</mat-icon></button>
+        <button mat-icon-button type="button" (click)="sendToGemini()" color="accent"><mat-icon>smart_toy</mat-icon></button>
+        <input type="file" #fileInput style="display: none" (change)="onFileSelected($event)" accept="image/*,video/*,audio/*,.pdf">
+        <button mat-icon-button type="button" (click)="fileInput.click()" color="primary"><mat-icon>attach_file</mat-icon></button>
+        <button mat-icon-button type="button" (click)="startRecording()" *ngIf="!isRecording" color="primary"><mat-icon>mic</mat-icon></button>
+        <button mat-icon-button type="button" (click)="stopRecording()" *ngIf="isRecording" color="warn"><mat-icon>stop</mat-icon></button>
+        <button mat-icon-button type="button" (click)="toggleEmojiPicker()" color="primary"><mat-icon>mood</mat-icon></button>
+        <div *ngIf="showEmojiPicker" class="emoji-picker">
+          <span (click)="addEmoji('😊')">😊</span>
+          <span (click)="addEmoji('😂')">😂</span>
+          <span (click)="addEmoji('👍')">👍</span>
+        </div>
+      </form>
+    </mat-card-actions>
+  </mat-card>

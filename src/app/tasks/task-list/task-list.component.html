@@ -1,0 +1,13 @@
+<mat-list>
+    <mat-list-item *ngFor="let task of tasks">
+      <span matLine>{{ task.title }} - {{ task.status }}</span>
+      <mat-select [(value)]="task.status" (selectionChange)="updateTask(task.id, $event.value)">
+        <mat-option value="nouvelle">Nouvelle</mat-option>
+        <mat-option value="en cours">En cours</mat-option>
+        <mat-option value="terminée">Terminée</mat-option>
+        <mat-option value="en retard">En retard</mat-option>
+        <mat-option value="annulée">Annulée</mat-option>
+      </mat-select>
+    </mat-list-item>
+  </mat-list>
+  <button mat-raised-button color="accent" [routerLink]="['/tasks/create', projectId]" *ngIf="projectId">Nouvelle Tâche</button>

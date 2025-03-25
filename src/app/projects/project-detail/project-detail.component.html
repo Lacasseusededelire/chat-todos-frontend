@@ -1,0 +1,25 @@
+<mat-card class="project-detail-card" *ngIf="project">
+    <mat-card-header>
+      <mat-card-title>{{ project.name }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Prix : {{ project.price | currency }}</p>
+      <p>Langue : {{ project.language === 'fr' ? 'Français' : 'Anglais' }}</p>
+      <h3>Utilisateurs</h3>
+      <mat-list>
+        <mat-list-item *ngFor="let user of project.users">{{ user.username }}</mat-list-item>
+      </mat-list>
+      <form [formGroup]="inviteForm" (ngSubmit)="inviteUser()">
+        <mat-form-field appearance="outline">
+          <mat-label>Email de l'invité</mat-label>
+          <input matInput formControlName="email" />
+          <mat-error *ngIf="inviteForm.get('email')?.hasError('required')">Email requis</mat-error>
+        </mat-form-field>
+        <button mat-raised-button color="accent" type="submit" [disabled]="!inviteForm.valid">Inviter</button>
+      </form>
+      <h3>Tâches</h3>
+      <app-task-list [tasks]="tasks" [projectId]="project.id"></app-task-list>
+      <h3>Chat</h3>
+      <app-chat-room [chatId]="project.chats && project.chats.length > 0 ? project.chats[0].id : null"></app-chat-room>
+    </mat-card-content>
+  </mat-card>
