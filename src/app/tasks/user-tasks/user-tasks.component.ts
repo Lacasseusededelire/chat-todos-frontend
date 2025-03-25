@@ -148,21 +148,16 @@ export class UserTasksComponent implements OnInit {
       assignedTo: task.assignedTo?.username || 'Non assigné',
     }));
 
-    const message = `Génère un planning bien formaté pour les tâches suivantes : ${JSON.stringify(tasksForPlanning)}. Fournis une réponse sous forme de texte structuré (par exemple, un tableau ou une liste) avec les ressources nécessaires pour chaque tâche.`;
-
-    const systemPrompt = 'Tu es un conseiller utile pour les projets et tâches. Réponds de manière concise et pratique.';
-    const contents = [{ role: 'user', parts: [{ text: `${systemPrompt}\n\n${message}` }] }];
-
-    this.http.post('https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyD0ARAcgdtnBqQdNptUMbwINM4Ea1QvW3o', {
-      contents,
-      generationConfig: { maxOutputTokens: 500 },
-    }).subscribe({
-      next: (response: any) => {
-        const planningText = response.candidates[0].content.parts[0].text;
+    this.http.post('http://localhost:3000/chat/generate-planning', { tasks: tasksForPlanning }, { responseType: 'text' }).subscribe({
+      next: (planningText: string) => {
+        console.log('Planning reçu:', planningText); // Log pour déboguer
         const blob = new Blob([planningText], { type: 'text/plain' });
         saveAs(blob, 'planning.txt');
       },
-      error: (err: any) => console.error('Erreur génération planning:', err),
+      error: (err: any) => {
+        console.error('Erreur génération planning:', err);
+        alert('Erreur lors de la génération du planning. Vérifiez votre connexion au serveur.');
+      },
     });
   }
 }
